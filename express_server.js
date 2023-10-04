@@ -44,17 +44,23 @@ app.get("/u/:id", (req, res) => {
   res.redirect(longURL);
 });
 
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
-});
-
+//generate new ID and redirects to urls with new ID
 app.post("/urls", (req, res) => {
   const id = generateRandomString();
   const longURL = req.body.longURL;
   urlDatabase[id] = longURL;
-  res.redirect("/urls/:id");
+  res.redirect(`/urls/${id}`);
 });
 
+//Edit the longURL for an existing shortURL
+app.post("/urls/:id", (req, res) => {
+  const id = req.params.id;
+  const longURL = req.body.longURL;
+  urlDatabase[id] = longURL;
+  res.redirect("/urls");
+});
+
+// Delete Tiny Url
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
   res.redirect("/urls");
