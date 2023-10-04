@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
+const cookieParser = require("cookie-parser");
 
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.set("view engine", "ejs");
 
@@ -63,6 +65,12 @@ app.post("/urls/:id", (req, res) => {
 // Delete Tiny Url
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
+  res.redirect("/urls");
+});
+
+app.post("/login", (req, res) => {
+  const username = req.body.username;
+  res.cookie("username", username);
   res.redirect("/urls");
 });
 
