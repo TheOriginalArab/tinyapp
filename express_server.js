@@ -25,25 +25,31 @@ const urlDatabase = {
 };
 
 app.get("/urls", (req, res) => {
-  const templateVars = { urls: urlDatabase };
+  const templateVars = { urls: urlDatabase, username: req.cookies["username"] };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  const templateVars = { username: req.cookies["username"] };
+  res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:id", (req, res) => {
   const id = req.params.id;
   const longURL = urlDatabase[id];
-  const templateVars = { id: id, longURL: longURL };
+  const templateVars = {
+    id: id,
+    longURL: longURL,
+    username: req.cookies["username"],
+  };
   res.render("urls_show", templateVars);
 });
 
 app.get("/u/:id", (req, res) => {
+  const templateVars = { username: req.cookies["username"] };
   const id = req.params.id;
   const longURL = urlDatabase[id];
-  res.redirect(longURL);
+  res.redirect(longURL, templateVars);
 });
 
 //generate new ID and redirects to urls with new ID
