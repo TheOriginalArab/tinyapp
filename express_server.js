@@ -22,7 +22,21 @@ app.set("view engine", "ejs");
 
 const users = {};
 
-const urlDatabase = {};
+const urlDatabase = {
+  i3BoGr: {
+    longURL: "https://www.google.ca",
+    userID: "a1b2c3"
+  }
+};
+
+app.get("/", (req, res) => {
+  const user = users[req.session.user_id];
+  if (!user) {
+    res.redirect("/login");
+  } else {
+    res.redirect("/urls");
+  }
+});
 
 app.get("/urls", (req, res) => {
   const user = users[req.session.user_id];
@@ -70,13 +84,14 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.get("/u/:id", (req, res) => {
-  const templateVars = { user: users[req.session.user_id] };
+  //const templateVars = { user: users[req.session.user_id] };
   const id = req.params.id;
-  const longURL = urlDatabase[id];
+  const longURL = urlDatabase[id].longURL;
   if (!longURL) {
     res.status(404).send("<h2>URL not found. Please check the link.</h2>");
   } else {
-    res.redirect(longURL, templateVars);
+    //res.redirect(longURL, templateVars);
+    res.redirect(longURL);
   }
 });
 
