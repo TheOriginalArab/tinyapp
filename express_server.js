@@ -25,8 +25,8 @@ const users = {};
 const urlDatabase = {
   i3BoGr: {
     longURL: "https://www.google.ca",
-    userID: "a1b2c3"
-  }
+    userID: "a1b2c3",
+  },
 };
 
 app.get("/", (req, res) => {
@@ -84,13 +84,11 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.get("/u/:id", (req, res) => {
-  //const templateVars = { user: users[req.session.user_id] };
   const id = req.params.id;
-  const longURL = urlDatabase[id].longURL;
-  if (!longURL) {
+  if (!urlDatabase[id]) {
     res.status(404).send("<h2>URL not found. Please check the link.</h2>");
   } else {
-    //res.redirect(longURL, templateVars);
+    const longURL = urlDatabase[id].longURL;
     res.redirect(longURL);
   }
 });
